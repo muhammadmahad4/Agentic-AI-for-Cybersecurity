@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+
+# Secrets and local config — never commit these
+.env
+.env.*
+*.pem
+*.key
+
+# Lab runtime artifacts (may contain target data or credentials)
+logs/
+audit/*.jsonl
+results/raw/
+
+# Model weights
+*.gguf
+*.safetensors
+models/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
