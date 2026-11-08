@@ -7,7 +7,7 @@
 
 An autonomous LLM agent for penetration testing and security operations, built on [OpenClaw](https://github.com/openclaw/openclaw) and running a fully local model inside a network-isolated lab. The project also turns the analysis on the agent itself: it threat-models the agent, hardens it, and measures how much each control actually reduces risk.
 
-> BSc Computer Science Final Year Project, City University of Hong Kong (CS4514), Sep 2026 – Apr 2027. Supervised by Prof. Gerhard P. Hancke.
+> BSc Computer Science Final Year Project, City University of Hong Kong (CS4514), Sep 2026 to Apr 2027. Supervised by Prof. Gerhard P. Hancke.
 
 **Contents:** [Problem](#the-problem) · [Objectives](#objectives) · [Architecture](#architecture) · [Evaluation](#evaluation-approach) · [Progress](#progress-so-far) · [Roadmap](#roadmap) · [Background reading](#background-reading) · [Responsible use](#responsible-use)
 
@@ -18,7 +18,7 @@ An autonomous LLM agent for penetration testing and security operations, built o
 LLM agents can now plan, call tools and act with little supervision, which makes them attractive for routine security work: reconnaissance, scanning, log triage, exploit validation. Two questions are still poorly answered:
 
 1. **How well does such an agent actually perform**, measured in a way that survives repeated runs rather than a single lucky attempt?
-2. **What new risk does the agent introduce?** A security agent reads attacker-controlled content all day (banners, scan output, logs) while holding powerful tools — a near-ideal target for prompt injection and tool abuse.
+2. **What new risk does the agent introduce?** A security agent reads attacker-controlled content all day (banners, scan output, logs) while holding powerful tools, which makes it a near-ideal target for prompt injection and tool abuse.
 
 Existing pentest agents mostly report single-run success rates, and existing OpenClaw security research treats it as a personal assistant. This project combines the two: **OpenClaw as an offensive tool, evaluated for reliability, and hardened against itself.**
 
@@ -57,7 +57,7 @@ Existing pentest agents mostly report single-run success rates, and existing Ope
 
 ## Evaluation approach
 
-- **Reliability-aware metrics:** multiple seeded runs with mean ± std, solved-at-least-once vs solved-every-time, milestone progression, steps and wall-clock time — not a single binary pass/fail.
+- **Reliability-aware metrics:** multiple seeded runs with mean ± std, solved-at-least-once vs solved-every-time, milestone progression, steps and wall-clock time, rather than a single binary pass/fail.
 - **Trace auditing:** each claimed success is checked against the audit log to confirm it was a genuine exploit.
 - **Before/after hardening:** benign utility, utility under attack and attack success rate, measured with adapted adversarial scenarios and planted canary credentials to detect leaks automatically.
 - **Targets:** deliberately vulnerable machines only (DVWA, Metasploitable, VulnHub) on an isolated network.
@@ -76,12 +76,12 @@ Existing pentest agents mostly report single-run success rates, and existing Ope
 
 | Phase | Timing | Status |
 |---|---|---|
-| Literature review, design, software-engineering & test plan | Sep–Oct 2026 | ✅ Done (Interim Report I) |
-| Lab host, hardening baseline, local model serving | Oct–Nov 2026 | ✅ First increment done |
-| Network isolation, first skill + audit logger end-to-end | Nov–Dec 2026 | 🔄 In progress |
-| Remaining skills, findings store, evaluation harness | Jan–Feb 2027 | ⏳ Planned |
-| Threat model, hardening, before/after measurement | Feb–Mar 2027 | ⏳ Planned |
-| Final evaluation, operator frontend, report & demo | Mar–Apr 2027 | ⏳ Planned |
+| Literature review, design, software-engineering & test plan | Sep-Oct 2026 | ✅ Done (Interim Report I) |
+| Lab host, hardening baseline, local model serving | Oct-Nov 2026 | ✅ First increment done |
+| Network isolation, first skill + audit logger end-to-end | Nov-Dec 2026 | 🔄 In progress |
+| Remaining skills, findings store, evaluation harness | Jan-Feb 2027 | ⏳ Planned |
+| Threat model, hardening, before/after measurement | Feb-Mar 2027 | ⏳ Planned |
+| Final evaluation, operator frontend, report & demo | Mar-Apr 2027 | ⏳ Planned |
 
 ## Tech stack
 
@@ -101,14 +101,14 @@ Code (skills, safety layer, audit logger, evaluation harness, frontend) will be 
 
 Work this project builds on most directly:
 
-- **PentestGPT** — Deng et al., USENIX Security 2024. [arXiv:2308.06782](https://arxiv.org/abs/2308.06782)
-- **xOffense** — Luong et al., 2025. [arXiv:2509.13021](https://arxiv.org/abs/2509.13021)
-- **Why Do Multi-Agent LLM Systems Fail?** — Cemri et al., NeurIPS 2025 Datasets & Benchmarks. [arXiv:2503.13657](https://arxiv.org/abs/2503.13657)
-- **Indirect prompt injection** — Greshake et al., AISec 2023. [arXiv:2302.12173](https://arxiv.org/abs/2302.12173)
-- **AgentDojo** — Debenedetti et al., NeurIPS 2024 Datasets & Benchmarks. [arXiv:2406.13352](https://arxiv.org/abs/2406.13352)
-- **MATRA: attack-surface modelling of OpenClaw** — Van hamme et al., 2026. [arXiv:2605.10763](https://arxiv.org/abs/2605.10763)
-- **Security analysis and defence framework for OpenClaw** — Shan et al., 2026. [arXiv:2603.10387](https://arxiv.org/abs/2603.10387)
-- **PASB: benchmarking attacks on OpenClaw** — Wang et al., 2026. [arXiv:2602.08412](https://arxiv.org/abs/2602.08412)
+- **PentestGPT**: Deng et al., USENIX Security 2024. [arXiv:2308.06782](https://arxiv.org/abs/2308.06782)
+- **xOffense**: Luong et al., 2025. [arXiv:2509.13021](https://arxiv.org/abs/2509.13021)
+- **Why Do Multi-Agent LLM Systems Fail?**: Cemri et al., NeurIPS 2025 Datasets & Benchmarks. [arXiv:2503.13657](https://arxiv.org/abs/2503.13657)
+- **Indirect prompt injection**: Greshake et al., AISec 2023. [arXiv:2302.12173](https://arxiv.org/abs/2302.12173)
+- **AgentDojo**: Debenedetti et al., NeurIPS 2024 Datasets & Benchmarks. [arXiv:2406.13352](https://arxiv.org/abs/2406.13352)
+- **MATRA: attack-surface modelling of OpenClaw**: Van hamme et al., 2026. [arXiv:2605.10763](https://arxiv.org/abs/2605.10763)
+- **Security analysis and defence framework for OpenClaw**: Shan et al., 2026. [arXiv:2603.10387](https://arxiv.org/abs/2603.10387)
+- **PASB: benchmarking attacks on OpenClaw**: Wang et al., 2026. [arXiv:2602.08412](https://arxiv.org/abs/2602.08412)
 
 ## Responsible use
 
@@ -120,4 +120,4 @@ Supervised by Prof. Gerhard P. Hancke, Department of Computer Science, City Univ
 
 ## Author
 
-**Muhammad Mahad** — BSc Computer Science, City University of Hong Kong · [@muhammadmahad4](https://github.com/muhammadmahad4)
+**Muhammad Mahad**, BSc Computer Science, City University of Hong Kong · [@muhammadmahad4](https://github.com/muhammadmahad4)
