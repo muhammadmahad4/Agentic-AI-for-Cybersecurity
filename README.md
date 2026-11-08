@@ -7,7 +7,7 @@
 
 An autonomous LLM agent for penetration testing and security operations, built on [OpenClaw](https://github.com/openclaw/openclaw) and running a fully local model inside a network-isolated lab. The project also turns the analysis on the agent itself: it threat-models the agent, hardens it, and measures how much each control actually reduces risk.
 
-> BSc Computer Science Final Year Project, City University of Hong Kong (CS4514), Sep 2026 to Apr 2027. Supervised by Prof. Gerhard P. Hancke.
+> BSc Computer Science Final Year Project, City University of Hong Kong (CS4514), Sep 2026 to Apr 2027. Supervised by [Prof. Gerhard P. Hancke](https://scholar.google.com/citations?user=C2iR3xUAAAAJ&hl=en).
 
 **Contents:** [Problem](#the-problem) · [Objectives](#objectives) · [Architecture](#architecture) · [Evaluation](#evaluation-approach) · [Progress](#progress-so-far) · [Roadmap](#roadmap) · [Background reading](#background-reading) · [Responsible use](#responsible-use)
 
@@ -116,7 +116,7 @@ All testing happens in an isolated lab against intentionally vulnerable targets.
 
 ## Acknowledgements
 
-Supervised by Prof. Gerhard P. Hancke, Department of Computer Science, City University of Hong Kong. Built on the open-source [OpenClaw](https://github.com/openclaw/openclaw) project (MIT).
+Supervised by [Prof. Gerhard P. Hancke](https://scholar.google.com/citations?user=C2iR3xUAAAAJ&hl=en), Department of Computer Science, City University of Hong Kong. Built on the open-source [OpenClaw](https://github.com/openclaw/openclaw) project (MIT).
 
 ## Author
 
