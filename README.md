@@ -1,8 +1,15 @@
 # Agentic AI for Cyber Security
 
+![Status](https://img.shields.io/badge/status-in%20progress-orange)
+![Local LLM](https://img.shields.io/badge/LLM-fully%20local-blue)
+![Lab](https://img.shields.io/badge/lab-network--isolated-lightgrey)
+![CityU](https://img.shields.io/badge/CityU%20CS-Final%20Year%20Project%202026%2F27-8a1538)
+
 An autonomous LLM agent for penetration testing and security operations, built on [OpenClaw](https://github.com/openclaw/openclaw) and running a fully local model inside a network-isolated lab. The project also turns the analysis on the agent itself: it threat-models the agent, hardens it, and measures how much each control actually reduces risk.
 
-> **Status:** in progress — BSc Computer Science Final Year Project, City University of Hong Kong (CS4514, 2026/27). Supervised by Prof. Gerhard P. Hancke.
+> BSc Computer Science Final Year Project, City University of Hong Kong (CS4514), Sep 2026 – Apr 2027. Supervised by Prof. Gerhard P. Hancke.
+
+**Contents:** [Problem](#the-problem) · [Objectives](#objectives) · [Architecture](#architecture) · [Evaluation](#evaluation-approach) · [Progress](#progress-so-far) · [Roadmap](#roadmap) · [Background reading](#background-reading) · [Responsible use](#responsible-use)
 
 ---
 
@@ -14,6 +21,16 @@ LLM agents can now plan, call tools and act with little supervision, which makes
 2. **What new risk does the agent introduce?** A security agent reads attacker-controlled content all day (banners, scan output, logs) while holding powerful tools — a near-ideal target for prompt injection and tool abuse.
 
 Existing pentest agents mostly report single-run success rates, and existing OpenClaw security research treats it as a personal assistant. This project combines the two: **OpenClaw as an offensive tool, evaluated for reliability, and hardened against itself.**
+
+## Objectives
+
+| # | Objective | Realised by |
+|---|---|---|
+| O1 | Deploy a hardened, fully local, containerised OpenClaw instance | Bare-metal host hardening, Docker sandbox, network segmentation |
+| O2 | Build custom security skills | Recon, vuln-scan, log-analysis and exploit-chain skills |
+| O3 | Autonomous execution with human oversight | Agent loop, operator frontend, human approval of risky actions |
+| O4 | Evaluate the agent reliably | Audit logger, evaluation harness, multi-run metrics |
+| O5 | Threat-model, harden and measure the agent itself | Safety layer, canary credentials, adversarial scenario suite |
 
 ## Architecture
 
@@ -28,6 +45,16 @@ Existing pentest agents mostly report single-run success rates, and existing Ope
 
 <p align="center"><img src="docs/figures/agent-loop.png" width="560" alt="Agent loop"></p>
 
+### Design decisions at a glance
+
+| Decision | Chosen | Rejected | Why |
+|---|---|---|---|
+| Agent topology | Single agent + iterative replanning | Multiple coordinating agents | Coordination is the dominant failure source; smaller attack surface |
+| Model | Local open-weight, off-the-shelf | Cloud API; fine-tuned model | Isolated lab; 20 GB GPU rules out fine-tuning; keeps the security measurement clean |
+| Primary safety controls | Scope enforcement, sandbox guard, human approval | Prompt- and pattern-based filtering alone | Adaptive attackers beat in-band filters |
+| Agent memory | Structured task state + schema-constrained findings | Raw transcripts; RAG knowledge store | Limits context loss *and* stops injected text persisting |
+| Skills | Hand-written, reviewed skills | Self-generated skills (e.g. self-improving agents) | Reproducible runs; no unreviewed capability growth |
+
 ## Evaluation approach
 
 - **Reliability-aware metrics:** multiple seeded runs with mean ± std, solved-at-least-once vs solved-every-time, milestone progression, steps and wall-clock time — not a single binary pass/fail.
@@ -35,9 +62,15 @@ Existing pentest agents mostly report single-run success rates, and existing Ope
 - **Before/after hardening:** benign utility, utility under attack and attack success rate, measured with adapted adversarial scenarios and planted canary credentials to detect leaks automatically.
 - **Targets:** deliberately vulnerable machines only (DVWA, Metasploitable, VulnHub) on an isolated network.
 
-## Tech stack
+## Progress so far
 
-OpenClaw · local open-weight LLM (MoE, ~3B active parameters) · Docker / Compose · Ubuntu Server (hardened, bare-metal) · Python · web frontend over REST + WebSocket · Kali tooling (Nmap and friends)
+- **Lab host is live:** a dedicated GPU workstation running bare-metal Ubuntu Server with no desktop environment, to keep the attack surface small.
+- **Baseline hardening applied:** key-only SSH with root and password login disabled, a default-deny firewall, automatic security updates without unattended reboots, and brute-force banning. A formal benchmark-based hardening pass comes next.
+- **Container stack:** Docker Engine + Compose, matching the Docker-based threat models in the OpenClaw security literature.
+- **Local model serving works:** the lead candidate (a mixture-of-experts model, ~30B parameters with ~3B active) runs fully on the GPU. Its serving API is bound to localhost only, because it has no authentication.
+- **Design complete:** full preliminary design, use cases, test plan and traceability matrix submitted in Interim Report I (Oct 2026).
+
+**Next:** isolate the lab network, then run the first skill and the audit logger end to end.
 
 ## Roadmap
 
@@ -50,6 +83,10 @@ OpenClaw · local open-weight LLM (MoE, ~3B active parameters) · Docker / Compo
 | Threat model, hardening, before/after measurement | Feb–Mar 2027 | ⏳ Planned |
 | Final evaluation, operator frontend, report & demo | Mar–Apr 2027 | ⏳ Planned |
 
+## Tech stack
+
+OpenClaw · local open-weight LLM (MoE) · Docker Engine / Compose · Ubuntu Server · Python · web frontend over REST + WebSocket · Kali tooling (Nmap and friends)
+
 ## Repository layout
 
 ```
@@ -58,13 +95,29 @@ docs/
   reports/     project reports (published after assessment)
 ```
 
-Code (skills, safety layer, audit logger, evaluation harness, frontend) will be added here as each increment lands.
+Code (skills, safety layer, audit logger, evaluation harness, frontend) will be added as each increment lands.
+
+## Background reading
+
+Work this project builds on most directly:
+
+- **PentestGPT** — Deng et al., USENIX Security 2024. [arXiv:2308.06782](https://arxiv.org/abs/2308.06782)
+- **xOffense** — Luong et al., 2025. [arXiv:2509.13021](https://arxiv.org/abs/2509.13021)
+- **Why Do Multi-Agent LLM Systems Fail?** — Cemri et al., NeurIPS 2025 Datasets & Benchmarks. [arXiv:2503.13657](https://arxiv.org/abs/2503.13657)
+- **Indirect prompt injection** — Greshake et al., AISec 2023. [arXiv:2302.12173](https://arxiv.org/abs/2302.12173)
+- **AgentDojo** — Debenedetti et al., NeurIPS 2024 Datasets & Benchmarks. [arXiv:2406.13352](https://arxiv.org/abs/2406.13352)
+- **MATRA: attack-surface modelling of OpenClaw** — Van hamme et al., 2026. [arXiv:2605.10763](https://arxiv.org/abs/2605.10763)
+- **Security analysis and defence framework for OpenClaw** — Shan et al., 2026. [arXiv:2603.10387](https://arxiv.org/abs/2603.10387)
+- **PASB: benchmarking attacks on OpenClaw** — Wang et al., 2026. [arXiv:2602.08412](https://arxiv.org/abs/2602.08412)
 
 ## Responsible use
 
 All testing happens in an isolated lab against intentionally vulnerable targets. This repository publishes methodology, skills and configuration; it does not bundle OpenClaw itself, and it will not include real findings or drop-in exploit code. Do not point anything here at systems you are not authorised to test.
 
+## Acknowledgements
+
+Supervised by Prof. Gerhard P. Hancke, Department of Computer Science, City University of Hong Kong. Built on the open-source [OpenClaw](https://github.com/openclaw/openclaw) project (MIT).
+
 ## Author
 
-**Muhammad Mahad** — BSc Computer Science, City University of Hong Kong
-GitHub: [@muhammadmahad4](https://github.com/muhammadmahad4)
+**Muhammad Mahad** — BSc Computer Science, City University of Hong Kong · [@muhammadmahad4](https://github.com/muhammadmahad4)
