@@ -3,7 +3,7 @@
 ![Status](https://img.shields.io/badge/status-in%20progress-orange)
 ![Local LLM](https://img.shields.io/badge/LLM-fully%20local-blue)
 ![Lab](https://img.shields.io/badge/lab-network--isolated-lightgrey)
-![CityU](https://img.shields.io/badge/CityU%20CS-Final%20Year%20Project%202026%2F27-8a1538)
+![CityU](https://img.shields.io/badge/CityU-Computer%20Science-8a1538)
 
 An autonomous LLM agent for penetration testing and security operations, built on [OpenClaw](https://github.com/openclaw/openclaw) and running a fully local model inside a network-isolated lab. The project also turns the analysis on the agent itself: it threat-models the agent, hardens it, and measures how much each control actually reduces risk.
 
